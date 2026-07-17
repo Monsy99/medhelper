@@ -61,7 +61,7 @@ See [docs/adding-a-new-tool.md](docs/adding-a-new-tool.md).
 
 ## Deployment
 
-Pushes to `main` build and deploy automatically via
+Pushes to `master` build and deploy automatically via
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) to GitHub
 Pages. One-time setup after the repo is pushed to GitHub: **Settings → Pages
 → Source → GitHub Actions**.
