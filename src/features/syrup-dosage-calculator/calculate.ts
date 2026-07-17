@@ -27,6 +27,10 @@ function assertPositive(value: number, label: string): void {
   }
 }
 
+function round2(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
 export function calculateSyrupDosage({
   weightKg,
   doseMinPerKgPerDay,
@@ -53,15 +57,15 @@ export function calculateSyrupDosage({
   const frequencies: FrequencyDosage[] = TIMES_PER_DAY_OPTIONS.map(
     (timesPerDay) => ({
       timesPerDay,
-      minMl: Math.round(dailyDoseMinJ / timesPerDay / concentrationJPerMl),
-      maxMl: Math.round(dailyDoseMaxJ / timesPerDay / concentrationJPerMl),
+      minMl: round2(dailyDoseMinJ / timesPerDay / concentrationJPerMl),
+      maxMl: round2(dailyDoseMaxJ / timesPerDay / concentrationJPerMl),
     })
   );
 
   return {
-    dailyDoseMinJ: Math.round(dailyDoseMinJ * 100) / 100,
-    dailyDoseMaxJ: Math.round(dailyDoseMaxJ * 100) / 100,
-    concentrationJPerMl: Math.round(concentrationJPerMl * 100) / 100,
+    dailyDoseMinJ: round2(dailyDoseMinJ),
+    dailyDoseMaxJ: round2(dailyDoseMaxJ),
+    concentrationJPerMl: round2(concentrationJPerMl),
     frequencies,
   };
 }

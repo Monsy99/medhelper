@@ -15,12 +15,12 @@ describe("calculateSyrupDosage", () => {
     expect(result.concentrationJPerMl).toBe(100);
     expect(result.frequencies).toEqual([
       { timesPerDay: 2, minMl: 1, maxMl: 2 },
-      { timesPerDay: 3, minMl: 1, maxMl: 1 },
-      { timesPerDay: 4, minMl: 1, maxMl: 1 },
+      { timesPerDay: 3, minMl: 0.67, maxMl: 1.33 },
+      { timesPerDay: 4, minMl: 0.5, maxMl: 1 },
     ]);
   });
 
-  it("rounds each frequency's volume range to the nearest whole mL independently", () => {
+  it("keeps fractional mL amounts (rounded to 2 decimal places only, no whole-number rounding)", () => {
     const result = calculateSyrupDosage({
       weightKg: 20,
       doseMinPerKgPerDay: 15,
@@ -34,7 +34,7 @@ describe("calculateSyrupDosage", () => {
     expect(result.frequencies).toEqual([
       { timesPerDay: 2, minMl: 3, maxMl: 6 },
       { timesPerDay: 3, minMl: 2, maxMl: 4 },
-      { timesPerDay: 4, minMl: 2, maxMl: 3 },
+      { timesPerDay: 4, minMl: 1.5, maxMl: 3 },
     ]);
   });
 

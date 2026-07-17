@@ -54,7 +54,7 @@ describe("SyrupDosageCalculator", () => {
     expect(screen.getByText("Daily dose: 300–600 j")).toBeInTheDocument();
     expect(screen.getByText("3–6 mL")).toBeInTheDocument();
     expect(screen.getByText("2–4 mL")).toBeInTheDocument();
-    expect(screen.getByText("2–3 mL")).toBeInTheDocument();
+    expect(screen.getByText("1.5–3 mL")).toBeInTheDocument();
   });
 
   it("shows a validation message when the max dose is below the min dose", async () => {
