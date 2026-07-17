@@ -44,7 +44,20 @@ full step-by-step convention for how a tool is structured. Short version:
   render inside `ToolShell` (see any existing `src/app/tools/*/page.tsx`) so
   the "for reference only" disclaimer is always shown next to a result.
 - **Units in every label**: a bare number input on a medical calculator is a
-  dosing-error risk. Every input label states its unit (kg, cm, mg, mL, ...).
+  dosing-error risk. Every input label (or its suffix, via `NumberField`)
+  states its unit (kg, cm, j, mL, ...).
+- **UI kit**: components are [shadcn/ui](https://ui.shadcn.com) built on
+  `@base-ui/react`, generated into `src/components/ui/*` via
+  `npx shadcn@latest add <component>` — don't hand-edit generated files
+  beyond what the CLI produces, and don't introduce a second component
+  library. Base UI's polymorphic prop is `render` (e.g.
+  `<Button render={<Link href="/" />}>`), **not** Radix's `asChild` — see
+  `ToolShell.tsx` for the pattern.
+- **Single forced light theme**: `globals.css` sets `color-scheme: light` on
+  `html` and there is no `.dark` class or theme toggle anywhere. Don't add
+  `dark:` variant classes — they will never activate, and this is
+  intentional (a second untested theme is exactly how the "unreadable"
+  regression this app once had happens again).
 
 ## Verifying changes
 

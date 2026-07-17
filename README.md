@@ -11,7 +11,7 @@ judgment.** See each tool's own `README.md` for its formula and limitations.
 
 - [Next.js](https://nextjs.org) (App Router, static export)
 - TypeScript
-- Tailwind CSS v4
+- Tailwind CSS v4 + [shadcn/ui](https://ui.shadcn.com) (on `@base-ui/react`) — single forced-light theme
 - Jest + React Testing Library
 - GitHub Actions → GitHub Pages
 
@@ -45,7 +45,9 @@ src/
     page.tsx                 landing page (renders tiles from src/lib/tools.ts)
     layout.tsx                root layout — header + global styles
     tools/<slug>/page.tsx     one thin route per tool, wraps the feature in ToolShell
-  components/                 shared chrome: Header, ToolShell, ToolTile, Disclaimer
+  components/
+    ui/                        generated shadcn/ui primitives (button, card, input, table, ...)
+    *.tsx                      shared chrome: Header, ToolShell, ToolTile, Disclaimer, NumberField
   features/<slug>/             one folder per tool — calculation logic, UI, tests, README
   lib/tools.ts                 tool registry — the single source of truth for the landing page
 docs/

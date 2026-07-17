@@ -4,7 +4,10 @@ import { ToolTile } from "@/components/ToolTile";
 export default function Home() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12">
-      <p className="max-w-2xl text-slate-600">
+      <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+        Quick reference tools
+      </h1>
+      <p className="mt-2 max-w-2xl text-muted-foreground">
         Simple, fast reference calculators for everyday clinical tasks.
       </p>
 

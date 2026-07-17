@@ -19,7 +19,8 @@ as the reference example.
      Required for any tool that performs a clinical calculation.
 
 2. **Register the tool** in [`src/lib/tools.ts`](../src/lib/tools.ts) — add a
-   `{ slug, name, shortDescription, icon }` entry. This array is the single
+   `{ slug, name, shortDescription, icon }` entry, where `icon` is a
+   `lucide-react` icon component (e.g. `Scale`). This array is the single
    source of truth the landing page reads to render tiles, so it's the only
    place you need to touch to make the tool discoverable.
 
@@ -61,5 +62,12 @@ as the reference example.
 - Every tool that performs a clinical calculation ships a `README.md`
   documenting the formula and its limitations, and renders inside
   `ToolShell` so the disclaimer is shown automatically.
-- Keep tools framework-simple: no new state management library, no new UI kit
-  — plain React state and Tailwind utility classes match the rest of the app.
+- UI is built from `src/components/ui/*` (shadcn/ui, generated — don't
+  hand-edit these beyond what `npx shadcn add` produces) plus
+  `src/components/NumberField.tsx` for labeled numeric inputs with a unit
+  suffix. Don't hand-roll a plain `<input>`/`<label>` pair or introduce a
+  different component/state library — consistency here is what keeps the
+  whole site looking and behaving like one app.
+- The theme is a single forced-light theme (see the `color-scheme: light`
+  comment in `globals.css`) — don't add `dark:` variant classes, they'll
+  never activate.

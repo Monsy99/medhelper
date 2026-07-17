@@ -1,14 +1,25 @@
 export type SyrupDosageInput = {
   weightKg: number;
-  doseMgPerKg: number;
-  concentrationAmountMg: number;
+  doseMinPerKgPerDay: number;
+  doseMaxPerKgPerDay: number;
+  concentrationAmountJ: number;
   concentrationPerMl: number;
 };
 
-export type SyrupDosageResult = {
-  totalDoseMg: number;
-  volumeMl: number;
+export type FrequencyDosage = {
+  timesPerDay: number;
+  minMl: number;
+  maxMl: number;
 };
+
+export type SyrupDosageResult = {
+  dailyDoseMinJ: number;
+  dailyDoseMaxJ: number;
+  concentrationJPerMl: number;
+  frequencies: FrequencyDosage[];
+};
+
+const TIMES_PER_DAY_OPTIONS = [2, 3, 4] as const;
 
 function assertPositive(value: number, label: string): void {
   if (!(value > 0)) {
@@ -18,21 +29,39 @@ function assertPositive(value: number, label: string): void {
 
 export function calculateSyrupDosage({
   weightKg,
-  doseMgPerKg,
-  concentrationAmountMg,
+  doseMinPerKgPerDay,
+  doseMaxPerKgPerDay,
+  concentrationAmountJ,
   concentrationPerMl,
 }: SyrupDosageInput): SyrupDosageResult {
   assertPositive(weightKg, "Weight");
-  assertPositive(doseMgPerKg, "Dose");
-  assertPositive(concentrationAmountMg, "Concentration amount");
+  assertPositive(doseMinPerKgPerDay, "Minimum dose");
+  assertPositive(doseMaxPerKgPerDay, "Maximum dose");
+  assertPositive(concentrationAmountJ, "Concentration amount");
   assertPositive(concentrationPerMl, "Concentration volume");
 
-  const totalDoseMg = weightKg * doseMgPerKg;
-  const concentrationMgPerMl = concentrationAmountMg / concentrationPerMl;
-  const volumeMl = totalDoseMg / concentrationMgPerMl;
+  if (doseMaxPerKgPerDay < doseMinPerKgPerDay) {
+    throw new RangeError(
+      "Maximum dose must be greater than or equal to the minimum dose."
+    );
+  }
+
+  const dailyDoseMinJ = weightKg * doseMinPerKgPerDay;
+  const dailyDoseMaxJ = weightKg * doseMaxPerKgPerDay;
+  const concentrationJPerMl = concentrationAmountJ / concentrationPerMl;
+
+  const frequencies: FrequencyDosage[] = TIMES_PER_DAY_OPTIONS.map(
+    (timesPerDay) => ({
+      timesPerDay,
+      minMl: Math.round(dailyDoseMinJ / timesPerDay / concentrationJPerMl),
+      maxMl: Math.round(dailyDoseMaxJ / timesPerDay / concentrationJPerMl),
+    })
+  );
 
   return {
-    totalDoseMg: Math.round(totalDoseMg * 100) / 100,
-    volumeMl: Math.round(volumeMl * 100) / 100,
+    dailyDoseMinJ: Math.round(dailyDoseMinJ * 100) / 100,
+    dailyDoseMaxJ: Math.round(dailyDoseMaxJ * 100) / 100,
+    concentrationJPerMl: Math.round(concentrationJPerMl * 100) / 100,
+    frequencies,
   };
 }
