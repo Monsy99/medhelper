@@ -1,4 +1,5 @@
-import { nextJest } from "next/jest";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { nextJest } = require("next/jest");
 
 // next/jest loads next.config.ts and .env files, and applies the same SWC
 // transform Next.js uses, so tests don't need a separate Babel config.
